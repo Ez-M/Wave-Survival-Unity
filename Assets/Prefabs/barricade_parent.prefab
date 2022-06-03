@@ -123,6 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2943574306853411444}
+  - component: {fileID: 4178467383738077970}
   m_Layer: 0
   m_Name: barricade_parent
   m_TagString: Untagged
@@ -149,6 +150,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4178467383738077970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648076626758879403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5aaf2cd31c65547aebcebcb6ae1689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4031428022690160424
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +175,7 @@ GameObject:
   - component: {fileID: 7291238089086874616}
   - component: {fileID: 6201114442750104367}
   - component: {fileID: 823784714428089523}
+  - component: {fileID: 8487790804795217252}
   m_Layer: 8
   m_Name: triggerArea
   m_TagString: Untagged
@@ -465,6 +479,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8487790804795217252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4031428022690160424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3281bd2a04e096d459ae63cfa5057527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4798486862730432253
 GameObject:
   m_ObjectHideFlags: 0
