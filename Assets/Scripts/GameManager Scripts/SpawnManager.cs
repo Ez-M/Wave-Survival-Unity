@@ -13,6 +13,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         
+        
     }
 
     // Update is called once per frame
@@ -22,6 +23,16 @@ public class SpawnManager : MonoBehaviour
     }
 
 
+    public void init()
+    {
+
+    }
+
+
+    public void addSpawnerToList(GameObject spawner)
+    {
+        allSpawners.Add(spawner);
+    }
     // if (zedAwait >0 && zedAlive < 50)
     // {   
     //     spawnZed()

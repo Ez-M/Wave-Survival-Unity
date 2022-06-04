@@ -36,6 +36,11 @@ public class WaveManager : MonoBehaviour
 
     public void init()
     {
+        waveCount = 0;
+        zedLimit = 50;
+        zedDead = 0;
+        zedAlive = 0;
+        zedToSpawn = 0;
         startWave();
     }
 

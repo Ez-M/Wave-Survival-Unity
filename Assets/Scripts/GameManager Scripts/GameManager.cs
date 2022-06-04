@@ -43,4 +43,10 @@ public class GameManager : MonoBehaviour
         waveCount = waveManager.getWaveCount(); 
 
     }
+
+    // start game> set waveCount = 0 // startWave(){waveCount++; waveState = 2} update{}
+
+
+
+
 }
