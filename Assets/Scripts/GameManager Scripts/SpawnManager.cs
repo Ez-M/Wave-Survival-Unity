@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+
+    private  List<GameObject> allSpawners = new List<GameObject>();
+    private List<GameObject> activeSpawners = new List<GameObject>();
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +20,22 @@ public class SpawnManager : MonoBehaviour
     {
         
     }
+
+
+    // if (zedAwait >0 && zedAlive < 50)
+    // {   
+    //     spawnZed()
+
+    // }
+
+    // spawnZed()
+    // {
+    //     if(specialAwait <= 0 && specialToSpawn > 0)      //first we'll need to determine if the current zed will be special or not
+    //     {
+    //         calculateSpecial();
+    //     }
+    // }
+
+
+
 }
