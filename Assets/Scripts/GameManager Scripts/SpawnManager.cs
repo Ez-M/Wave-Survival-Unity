@@ -28,11 +28,16 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-
+    
     public void addSpawnerToList(GameObject spawner)
     {
         allSpawners.Add(spawner);
     }
+    
+    
+    
+    
+    
     // if (zedAwait >0 && zedAlive < 50)
     // {   
     //     spawnZed()

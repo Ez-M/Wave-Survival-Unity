@@ -6,12 +6,12 @@ public class addSpawner : MonoBehaviour
 {
 
     
-    private SpawnManager spawnManager;
+    private WaveManager waveManager;
     // Start is called before the first frame update
     void Start()
     {
-        spawnManager = GameObject.FindWithTag("GameManager").transform.Find("GameManager").gameObject.GetComponent<SpawnManager>();
-        spawnManager.addSpawnerToList(this.gameObject);
+        waveManager = GameObject.FindWithTag("GameManager").transform.Find("GameManager").gameObject.GetComponent<WaveManager>();
+        waveManager.addSpawnerToList(this.gameObject);
         
     }
 

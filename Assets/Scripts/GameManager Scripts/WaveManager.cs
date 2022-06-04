@@ -9,13 +9,17 @@ public class WaveManager : MonoBehaviour
     // private int currentWave;
     private int waveState;//1 = starting, 2 = ongoing, 3 = ending
     private int zedDead;
+    private int totalDead;
     private int zedAlive;
     private int zedToSpawn; //number of zed remaining to spawn this wave
-    private int zedAwait;   //time since last spawn
+    // private int zedAwait;   //time since last spawn
     private int zedLimit; // zombie spawn limiter
     private int gameDiff;   //1, 2, 3 for holding game difficulty. Will currently only have a possible value of 1 for testing purposes.
     
+    private SpawnManager spawnManager;
+    private GameManager gameManager;
 
+    private  List<GameObject> allSpawners = new List<GameObject>();
 //   private int specialDead;
 //   private int specialAlive;
 //   private int specialToSpawn;
@@ -36,16 +40,22 @@ public class WaveManager : MonoBehaviour
 
     public void init()
     {
+        gameManager = this.gameObject.GetComponent<GameManager>();
+        spawnManager = this.gameObject.GetComponent<SpawnManager>();
         waveCount = 0;
         zedLimit = 50;
         zedDead = 0;
         zedAlive = 0;
         zedToSpawn = 0;
+
         startWave();
     }
 
     public void startWave()
     {
+        waveCount++;
+        Debug.Log("Wave " +waveCount+" starting");
+        initWaveSpawns();
 
     }
 
@@ -53,6 +63,32 @@ public class WaveManager : MonoBehaviour
     {
         return waveCount;
     }
+
+
+
+
+    public void addSpawnerToList(GameObject spawner)
+    {
+        allSpawners.Add(spawner);
+    }
+    
+    public void initWaveSpawns()
+    {
+        zedToSpawn = waveCount*5;
+        // zedLimit = 50;
+        zedAlive = 0;
+        zedDead = 0;
+
+    }
+
+    // IEnumerator  SpawnZeds()
+    // {
+    //     if (zedAlive < zedLimit)
+    //     {
+    //         Random.Range(0, allSpawners.Count); //spawns tuff
+    //     }
+
+    // }
   /* 
 
 

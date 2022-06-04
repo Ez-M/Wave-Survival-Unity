@@ -37,9 +37,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void startGame()
-    {
-        waveCount = 0;
+    { 
         waveManager.init();
+        spawnManager.init();
         waveCount = waveManager.getWaveCount(); 
 
     }
