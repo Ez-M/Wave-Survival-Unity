@@ -101,24 +101,50 @@ public class WaveManager : MonoBehaviour
     IEnumerator  SpawnZeds()
     {
 
-        while( zedToSpawn>0){
-        Debug.Log("SpawnZeds Called");
-        GameObject spawnAt;
-        GameObject currentSpawn;
-        GameObject tempZombie;
-        if (zedAlive < zedLimit)
+        while(zedToSpawn > 0)
         {
-          spawnAt = allSpawners[Random.Range(0, allSpawners.Count)];  //spawns tuff
-          currentSpawn = allZombieTypes[Random.Range(0, allZombieTypes.Count)];
-          tempZombie = Instantiate(currentSpawn,spawnAt.transform.position,  Quaternion.identity, zombieCloneContainer.transform);
-          zedAlive++;
-          zedToSpawn--;
-        } else if (zedToSpawn<=0)
-        {stopSpawnRoutine();}
+            // Debug.Log("SpawnZeds Called");
+            GameObject spawnAt;
+            GameObject currentSpawn;
+            GameObject tempZombie;
+            if (zedAlive < zedLimit && zedToSpawn > 0)
+             {
+                spawnAt = allSpawners[Random.Range(0, allSpawners.Count)];  //spawns tuff
+                currentSpawn = allZombieTypes[Random.Range(0, allZombieTypes.Count)];
+                tempZombie = Instantiate(currentSpawn,spawnAt.transform.position,  Quaternion.identity, zombieCloneContainer.transform);
+                zedAlive++;
+                zedToSpawn--;
+                } else
+                {
+                  StartCoroutine(CheckForEndOfRound());
+                  stopSpawnRoutine();
+             }
 
         yield return new WaitForSeconds(.1f);
         }
 
+     }
+
+
+
+     IEnumerator CheckForEndOfRound()
+     {
+         while(true)
+         {
+             if(zedAlive == 0)
+             {
+                 StartCoroutine(RoundTransition());
+             }
+             yield return new WaitForSeconds(1f);
+         }
+     }
+
+     IEnumerator RoundTransition()
+     {
+         //play sound
+         //yield for 3 seconds
+         //transition round effect
+         yield return null;
      }
 
 
