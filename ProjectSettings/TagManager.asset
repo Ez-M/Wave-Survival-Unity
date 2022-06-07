@@ -8,6 +8,7 @@ TagManager:
   - Power-Up
   - UI
   - Spawner
+  - GameManager
   layers:
   - Default
   - TransparentFX

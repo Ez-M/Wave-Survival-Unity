@@ -49,6 +49,7 @@ public class WaveManager : MonoBehaviour
     {
         gameManager = this.gameObject.GetComponent<GameManager>();
         spawnManager = this.gameObject.GetComponent<SpawnManager>();
+        allZombieTypes.Add(zombie_basic);
         waveCount = 0;
         zedLimit = 50;
         zedDead = 0;
@@ -63,6 +64,7 @@ public class WaveManager : MonoBehaviour
         waveCount++;
         Debug.Log("Wave " +waveCount+" starting");
         initWaveSpawns();
+        StartCoroutine(SpawnZeds());
 
     }
 
@@ -81,6 +83,7 @@ public class WaveManager : MonoBehaviour
     
     public void initWaveSpawns()
     {
+        Debug.Log("initWave called");
         zedToSpawn = waveCount*5;
         // zedLimit = 50;
         zedAlive = 0;
@@ -91,11 +94,13 @@ public class WaveManager : MonoBehaviour
 
     public void stopSpawnRoutine()
     {
+        Debug.Log("SpawnZeds Stopped");
         StopCoroutine("SpawnZeds");
     }
 
     IEnumerator  SpawnZeds()
     {
+        Debug.Log("SpawnZeds Called");
         GameObject spawnAt;
         GameObject currentSpawn;
         GameObject tempZombie;

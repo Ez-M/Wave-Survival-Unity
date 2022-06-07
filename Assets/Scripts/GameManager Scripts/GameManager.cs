@@ -15,13 +15,13 @@ public class GameManager : MonoBehaviour
     void awake()
     {
         zedLimit = 50;
-        init();
-        startGame();
+        
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        init();
+        startGame();
     }
 
     // Update is called once per frame
@@ -32,15 +32,20 @@ public class GameManager : MonoBehaviour
 
     private void init()
     {
+        Debug.Log("GameManager init start");
         waveManager = this.gameObject.GetComponent<WaveManager>();
         spawnManager = this.gameObject.GetComponent<SpawnManager>();
+        Debug.Log("GameManager init end");
     }
 
     private void startGame()
     { 
+
+        Debug.Log("GameManager startGame");
         waveManager.init();
-        spawnManager.init();
+        // spawnManager.init();
         waveCount = waveManager.getWaveCount(); 
+        
 
     }
 
