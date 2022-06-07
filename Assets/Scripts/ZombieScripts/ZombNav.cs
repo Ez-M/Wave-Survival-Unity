@@ -44,9 +44,9 @@ public class ZombNav : MonoBehaviour
 
     IEnumerator think()
     {
-        navTarget = calculateNavTarget().transform;
+        while(true){navTarget = calculateNavTarget().transform;
         nm.SetDestination(navTarget.position);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f);}
     }
 
 

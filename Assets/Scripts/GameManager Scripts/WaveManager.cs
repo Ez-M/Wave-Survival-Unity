@@ -100,11 +100,13 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator  SpawnZeds()
     {
+
+        while( zedToSpawn>0){
         Debug.Log("SpawnZeds Called");
         GameObject spawnAt;
         GameObject currentSpawn;
         GameObject tempZombie;
-        if (zedAlive < zedLimit && zedToSpawn>0)
+        if (zedAlive < zedLimit)
         {
           spawnAt = allSpawners[Random.Range(0, allSpawners.Count)];  //spawns tuff
           currentSpawn = allZombieTypes[Random.Range(0, allZombieTypes.Count)];
@@ -115,6 +117,7 @@ public class WaveManager : MonoBehaviour
         {stopSpawnRoutine();}
 
         yield return new WaitForSeconds(.1f);
+        }
 
      }
 
