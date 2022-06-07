@@ -19,6 +19,13 @@ public class WaveManager : MonoBehaviour
     private SpawnManager spawnManager;
     private GameManager gameManager;
 
+    [SerializeField]
+    private GameObject zombie_basic;
+    [SerializeField]
+    private GameObject zombieCloneContainer;
+
+    private List<GameObject> allZombieTypes = new List<GameObject>();
+
     private  List<GameObject> allSpawners = new List<GameObject>();
 //   private int specialDead;
 //   private int specialAlive;
@@ -78,17 +85,35 @@ public class WaveManager : MonoBehaviour
         // zedLimit = 50;
         zedAlive = 0;
         zedDead = 0;
+        waveState = 2;
 
     }
 
-    // IEnumerator  SpawnZeds()
-    // {
-    //     if (zedAlive < zedLimit)
-    //     {
-    //         Random.Range(0, allSpawners.Count); //spawns tuff
-    //     }
+    public void stopSpawnRoutine()
+    {
+        StopCoroutine("SpawnZeds");
+    }
 
-    // }
+    IEnumerator  SpawnZeds()
+    {
+        GameObject spawnAt;
+        GameObject currentSpawn;
+        GameObject tempZombie;
+        if (zedAlive < zedLimit && zedToSpawn>0)
+        {
+          spawnAt = allSpawners[Random.Range(0, allSpawners.Count)];  //spawns tuff
+          currentSpawn = allZombieTypes[Random.Range(0, allZombieTypes.Count)];
+          tempZombie = Instantiate(currentSpawn,spawnAt.transform.position,  Quaternion.identity, zombieCloneContainer.transform);
+          zedAlive++;
+          zedToSpawn--;
+        } else if (zedToSpawn<=0)
+        {stopSpawnRoutine();}
+
+        yield return new WaitForSeconds(.1f);
+
+     }
+
+
   /* 
 
 
