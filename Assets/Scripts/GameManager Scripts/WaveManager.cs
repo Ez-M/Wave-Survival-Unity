@@ -19,6 +19,8 @@ public class WaveManager : MonoBehaviour
     private SpawnManager spawnManager;
     private GameManager gameManager;
 
+    private AudioSource noiseMaker;
+
     [SerializeField]
     private GameObject zombie_basic;
     [SerializeField]
@@ -47,8 +49,9 @@ public class WaveManager : MonoBehaviour
 
     public void init()
     {
-        gameManager = this.gameObject.GetComponent<GameManager>();
+        gameManager = this.gameObject.GetComponent<GameManager>();        
         spawnManager = this.gameObject.GetComponent<SpawnManager>();
+        noiseMaker = gameManager.gameObject.GetComponent<AudioSource>();
         allZombieTypes.Add(zombie_basic);
         waveCount = 0;
         zedLimit = 50;
@@ -92,10 +95,20 @@ public class WaveManager : MonoBehaviour
 
     }
 
+
+    public void hasDied()
+    {
+        zedAlive--;
+        zedDead++;
+        totalDead++;
+    }
+
     public void stopSpawnRoutine()
     {
         Debug.Log("SpawnZeds Stopped");
+        StartCoroutine(CheckForEndOfRound());
         StopCoroutine("SpawnZeds");
+
     }
 
     IEnumerator  SpawnZeds()
@@ -114,14 +127,22 @@ public class WaveManager : MonoBehaviour
                 tempZombie = Instantiate(currentSpawn,spawnAt.transform.position,  Quaternion.identity, zombieCloneContainer.transform);
                 zedAlive++;
                 zedToSpawn--;
-                } else
-                {
-                  StartCoroutine(CheckForEndOfRound());
-                  stopSpawnRoutine();
-             }
+                } 
+                
+            //     else  //when there are no more zed to spawn for this round, stop the spawn coroutine, and start the checkforendofround coroutine. 
+            //     {                  
+                  
+            //  }
+
+            
 
         yield return new WaitForSeconds(.1f);
         }
+
+        if(zedToSpawn<1)
+            {
+                stopSpawnRoutine();
+            }
 
      }
 
@@ -129,11 +150,13 @@ public class WaveManager : MonoBehaviour
 
      IEnumerator CheckForEndOfRound()
      {
+         Debug.Log("CheckforendofRound initiated");
          while(true)
          {
+             
              if(zedAlive == 0)
              {
-                 StartCoroutine(RoundTransition());
+                 StartCoroutine(RoundTransition()); //When there are no longer zedtospawn or zed alive, begin round transition
              }
              yield return new WaitForSeconds(1f);
          }
@@ -141,10 +164,11 @@ public class WaveManager : MonoBehaviour
 
      IEnumerator RoundTransition()
      {
-         //play sound
-         //yield for 3 seconds
+         Debug.Log("RoundTransition init");
+         noiseMaker.Play();//play sound
+         yield return new WaitForSeconds(3f);//yield for 3 seconds
          //transition round effect
-         yield return null;
+         startWave();    
      }
 
 
