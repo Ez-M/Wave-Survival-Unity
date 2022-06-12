@@ -111,6 +111,20 @@ public class WaveManager : MonoBehaviour
 
     }
 
+    public void stopCheckForEndOfRoundRoutine()
+    {
+        Debug.Log("CheckForEndOfRound stopped");        
+        StopCoroutine("CheckForEndOfRound");
+        StartCoroutine(RoundTransition()); //When there are no longer zedtospawn or zed alive, begin round transition
+    }
+
+    public void stopRoundTransitionRoutine()
+    {
+        Debug.Log("RoundTransition stopped");
+        StopCoroutine("RoundTransition");
+        startWave();
+    }
+
     IEnumerator  SpawnZeds()
     {
 
@@ -122,6 +136,8 @@ public class WaveManager : MonoBehaviour
             GameObject tempZombie;
             if (zedAlive < zedLimit && zedToSpawn > 0)
              {
+                Debug.Log("DEBUG FOR SPAWNZEDS");
+                Debug.Log(allSpawners.Count);
                 spawnAt = allSpawners[Random.Range(0, allSpawners.Count)];  //spawns tuff
                 currentSpawn = allZombieTypes[Random.Range(0, allZombieTypes.Count)];
                 tempZombie = Instantiate(currentSpawn,spawnAt.transform.position,  Quaternion.identity, zombieCloneContainer.transform);
@@ -151,12 +167,14 @@ public class WaveManager : MonoBehaviour
      IEnumerator CheckForEndOfRound()
      {
          Debug.Log("CheckforendofRound initiated");
-         while(true)
+         bool varTemp = true;
+         while(varTemp)
          {
              
              if(zedAlive == 0)
              {
-                 StartCoroutine(RoundTransition()); //When there are no longer zedtospawn or zed alive, begin round transition
+                 varTemp = false;                 
+                 stopCheckForEndOfRoundRoutine();
              }
              yield return new WaitForSeconds(1f);
          }
@@ -168,7 +186,7 @@ public class WaveManager : MonoBehaviour
          noiseMaker.Play();//play sound
          yield return new WaitForSeconds(3f);//yield for 3 seconds
          //transition round effect
-         startWave();    
+        stopRoundTransitionRoutine();
      }
 
 
