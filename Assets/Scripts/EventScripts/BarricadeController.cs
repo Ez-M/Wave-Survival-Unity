@@ -13,6 +13,7 @@ public class BarricadeController : MonoBehaviour
 
     private bool isAvailable;
     private GameManager gameManager;
+    private BarricadeAutoAdd BAA; 
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +32,9 @@ public class BarricadeController : MonoBehaviour
        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
        boardHolder = gameObject.transform.Find("boards_Holder").gameObject;
        triggerArea = gameObject.transform.Find("triggerArea").gameObject;
+       BAA = this.GetComponent<BarricadeAutoAdd>();       
        isAvailable = false;
+       BAA.init();
     }
 
     public void updateBoards(bool check)

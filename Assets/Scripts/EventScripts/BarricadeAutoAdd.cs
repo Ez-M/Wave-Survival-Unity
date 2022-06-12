@@ -15,7 +15,7 @@ public class BarricadeAutoAdd : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        init();
+        
     }
 
     // Update is called once per frame
@@ -24,12 +24,12 @@ public class BarricadeAutoAdd : MonoBehaviour
         
     }
 
-    private void init()
+    public void init()
     {
         barricadeController = this.GetComponent<BarricadeController>();
 
         gameManager = barricadeController.getGameManager();
-
+        Debug.Log(gameManager);
         entryManager = gameManager.GetComponent<EntryManager>();
         isDone = false;
 
