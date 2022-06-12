@@ -9,15 +9,18 @@ public class ZombAI : MonoBehaviour
     public float meleeAttack = 1f, meleeRange = 1f, meleeFrequency=1f, meleeKnock = 1f;
     public float projectileRange = 1f, projectileSpeed = 1f, projectileFrequency = 1f, projectileKnock =1f;
 
-    GameManager gameManager;
-    WaveManager waveManager;
+    private GameManager gameManager;
+    private WaveManager waveManager;
+    private ZombNav zombNav;
 
 
     // Start is called before the first frame update
     void Start()
     {
+
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         waveManager = gameManager.gameObject.GetComponent<WaveManager>();
+        zombNav = this.GetComponent<ZombNav>();
         
     }
 

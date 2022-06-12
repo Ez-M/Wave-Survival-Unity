@@ -64,6 +64,7 @@ public class ZombNav : MonoBehaviour
      {
                 // >find nearest window, if targetWindow.isValie==true >>> move to targetWindow.child("entryPoint")
                 // >if (isInside)
+                return null;
      }
 
 

@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2943574306853411444}
   - component: {fileID: 4178467383738077970}
+  - component: {fileID: 8285253831303213516}
   m_Layer: 0
   m_Name: barricade_parent
   m_TagString: Untagged
@@ -160,6 +161,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5aaf2cd31c65547aebcebcb6ae1689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8285253831303213516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648076626758879403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e707b3279733f842962aa6b262b2fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4031428022690160424

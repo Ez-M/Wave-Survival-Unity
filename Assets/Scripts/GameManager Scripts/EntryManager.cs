@@ -6,7 +6,7 @@ public class EntryManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public static EntryManager instance = null;
-    public  List<GameObject> availableWindows = new List<GameObject>();
+    public  List<GameObject> availableEntries = new List<GameObject>();
 
     // Start is called before the first frame update
     void Awake()

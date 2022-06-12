@@ -7,21 +7,32 @@ public class BarricadeController : MonoBehaviour
 {
 
     private int barHealth;    
-    GameObject boardHolder;
+    private GameObject boardHolder;
 
-    GameObject triggerArea;
+    private GameObject triggerArea;
+
+    private bool isAvailable;
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
         barHealth = 5;
-       boardHolder = gameObject.transform.Find("boards_Holder").gameObject;
-       triggerArea = gameObject.transform.Find("triggerArea").gameObject;
-        
+        init();        
     }
 
     // Update is called once per frame
     void Update()
-    {   }
+    { 
+
+    }
+
+    public void init()
+    {
+       gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+       boardHolder = gameObject.transform.Find("boards_Holder").gameObject;
+       triggerArea = gameObject.transform.Find("triggerArea").gameObject;
+       isAvailable = false;
+    }
 
     public void updateBoards(bool check)
     {
@@ -55,5 +66,22 @@ public class BarricadeController : MonoBehaviour
     {
         updateBoards(false);
     }
+
+    public bool getIsAvailable()
+    {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(bool to)
+    {
+        isAvailable = to;
+    }
+
+    public GameManager getGameManager()
+    {
+        return gameManager;
+    }
+
+
 
 }
