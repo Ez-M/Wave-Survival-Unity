@@ -11,6 +11,7 @@ public class ZombAI : MonoBehaviour
 
     private GameManager gameManager;
     private WaveManager waveManager;
+    private EntryManager entryManager;
     private ZombNav zombNav;
 
 
@@ -20,6 +21,7 @@ public class ZombAI : MonoBehaviour
 
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         waveManager = gameManager.gameObject.GetComponent<WaveManager>();
+        entryManager = gameManager.GetComponent<EntryManager>();
         zombNav = this.GetComponent<ZombNav>();
         
     }
@@ -94,7 +96,12 @@ public class ZombAI : MonoBehaviour
     }
 
 
-
+    public void getManagers(out GameManager out1, out WaveManager out2, out EntryManager out3)
+    {
+        out1 = gameManager;
+        out2 = waveManager;
+        out3 = entryManager;
+    } 
 
     // rayTrace -> onhit save hit -> run hit.target.parent.onDamage(weaponProfile, hit.target, player.id)
     // onDamage(float profileIn, string target, int playerId)

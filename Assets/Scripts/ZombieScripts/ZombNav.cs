@@ -9,6 +9,9 @@ public class ZombNav : MonoBehaviour
     private NavMeshAgent nm;
     public Transform navTarget;
     private ZombAI zombAI; 
+    private GameManager gameManager;
+    private EntryManager entryManager;
+    private WaveManager waveManager;
 
     private bool isInside;
 
@@ -31,6 +34,7 @@ public class ZombNav : MonoBehaviour
     {
         nm = gameObject.GetComponent<NavMeshAgent>();
         zombAI = this.GetComponent<ZombAI>();
+        zombAI.getManagers(out gameManager, out waveManager, out entryManager);        
         isInside = false;
     }
 
@@ -64,6 +68,11 @@ public class ZombNav : MonoBehaviour
      {
                 // >find nearest window, if targetWindow.isValie==true >>> move to targetWindow.child("entryPoint")
                 // >if (isInside)
+
+                if(entryManager.availableEntries.Count > 0)
+                {
+                    return null; //placeholder
+                }
                 return null;
      }
 
