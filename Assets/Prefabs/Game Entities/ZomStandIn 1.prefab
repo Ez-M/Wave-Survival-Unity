@@ -305,9 +305,10 @@ GameObject:
   - component: {fileID: 9189876833699098550}
   - component: {fileID: 6783374210033580263}
   - component: {fileID: 6137470194357317773}
+  - component: {fileID: 2420775632024269353}
   m_Layer: 0
   m_Name: ZomStandIn 1
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -390,6 +391,19 @@ NavMeshAgent:
   m_BaseOffset: 1.88
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!65 &2420775632024269353
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2965100757826298561}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 2.27, y: 3.5, z: 1.16}
+  m_Center: {x: 0, y: -0.2, z: 0}
 --- !u!1 &3446411945225342718
 GameObject:
   m_ObjectHideFlags: 0

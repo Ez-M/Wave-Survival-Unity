@@ -44,6 +44,10 @@ public class ZombNav : MonoBehaviour
         zombAI = this.GetComponent<ZombAI>();
         zombAI.getManagers(out gameManager, out waveManager, out entryManager);
         isInside = false;
+        canMove = true;
+        isBusy = false;
+        interruptMove = false;
+        atWindow = false;
     }
 
 
@@ -55,8 +59,7 @@ public class ZombNav : MonoBehaviour
             if (atWindow == true && isBusy == false)
             {
                 isBusy = true;
-                StartCoroutine(attemptEntry());
-                yield return new WaitForSeconds(0.2f);
+                yield return attemptEntry();
             }
 
             if (canMove == true && isBusy == false)
@@ -158,11 +161,34 @@ public class ZombNav : MonoBehaviour
             targetEntry.GetComponent<BarricadeController>().updateBoards(false);
         } else 
         {
-            //enter coroutine
+            bool check = TEBC.getIsOccupied();
+            if (check == false )
+            yield return enterPlaceHolder(TEBC);
+
         }
 
-        yield return new WaitForSeconds(0.3f);
+        // yield return new WaitForSeconds(0.3f);
         isBusy = false;
+    }
+
+    IEnumerator enterPlaceHolder(BarricadeController TEBC)
+    {
+        Vector3 myPos = this.gameObject.transform.position;
+        GameObject exitPoint = TEBC.getExitPoint();
+        Vector3 targetPos = exitPoint.transform.position;
+        int timer = 5;
+        while(timer > 0)
+        {
+            this.gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPos, 1*Time.deltaTime);
+            yield return new WaitForSeconds(0.5f);
+        }
+        if (timer == 0)
+        {
+            setIsInside(true);
+        }
+        
+        //         gun.transform.localPosition = Vector3.Lerp(gun.transform.localPosition, ADSPosition.transform.localPosition, ADSSpeed * Time.deltaTime);
+
     }
 
     #endregion
@@ -195,6 +221,19 @@ public class ZombNav : MonoBehaviour
     public bool getAtWindow()
     {
         return atWindow;
+    }
+
+    public void setIsInside(bool to)
+    {
+        isInside = to;
+    }
+    public void setTargetEntry(GameObject to)
+    {
+        targetEntry = to;
+    }
+    public bool getIsInside()
+    {
+        return isInside;
     }
      #endregion 
 

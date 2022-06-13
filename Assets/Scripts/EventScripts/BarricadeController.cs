@@ -6,56 +6,65 @@ using UnityEngine.InputSystem;
 public class BarricadeController : MonoBehaviour
 {
 
-    private int barHealth;    
+    private int barHealth;
     private GameObject boardHolder;
 
     private GameObject triggerArea;
+    private GameObject entryPoint;
+    private GameObject exitPoint;
 
-    private bool isAvailable;
+
     private GameManager gameManager;
-    private BarricadeAutoAdd BAA; 
+    private BarricadeAutoAdd BAA;
+
+
+
+    private bool isOccupied;
+    private bool isAvailable;
     // Start is called before the first frame update
     void Start()
     {
         barHealth = 5;
-        init();        
+        init();
     }
 
     // Update is called once per frame
     void Update()
-    { 
+    {
 
     }
 
     public void init()
     {
-       gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-       boardHolder = gameObject.transform.Find("boards_Holder").gameObject;
-       triggerArea = gameObject.transform.Find("triggerArea").gameObject;
-       BAA = this.GetComponent<BarricadeAutoAdd>();       
-       isAvailable = false;
-       BAA.init();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        boardHolder = gameObject.transform.Find("boards_Holder").gameObject;
+        triggerArea = gameObject.transform.Find("triggerArea").gameObject;
+        entryPoint = gameObject.transform.Find("entryPoint").gameObject;
+        exitPoint = gameObject.transform.Find("exitPoint").gameObject;
+        BAA = this.GetComponent<BarricadeAutoAdd>();
+        isAvailable = false;
+        BAA.init();
     }
 
     public void updateBoards(bool check)
     {
-        switch(check)
+        switch (check)
         {
-            case true: 
-            if (barHealth<5)
-            {
-            barHealth++;
-            boardHolder.transform.GetChild(barHealth-1).gameObject.SetActive(true);
-            }
-            break;
+            case true:
+                if (barHealth < 5)
+                {
+                    barHealth++;
+                    boardHolder.transform.GetChild(barHealth - 1).gameObject.SetActive(true);
+                }
+                break;
 
             case false:
-            if(barHealth>0)
-            {
-            boardHolder.transform.GetChild(barHealth-1).gameObject.SetActive(false);
-            barHealth--;
-            }
-            break;
+                if (barHealth > 0)
+                {
+                    boardHolder.transform.GetChild(barHealth - 1).gameObject.SetActive(false);
+                    barHealth--;
+                }
+                break;
         }
     }
 
@@ -65,7 +74,7 @@ public class BarricadeController : MonoBehaviour
         updateBoards(true);
     }
 
-        public void damageBoards(InputAction.CallbackContext context)
+    public void damageBoards(InputAction.CallbackContext context)
     {
         updateBoards(false);
     }
@@ -89,6 +98,26 @@ public class BarricadeController : MonoBehaviour
     public int getBarHealth()
     {
         return barHealth;
+    }
+
+
+    public bool getIsOccupied()
+    {
+        return isOccupied;
+    }
+
+    public void setIsOccupied(bool to)
+    {
+        isOccupied = to;
+    }
+
+    public GameObject getEntryPoint()
+    {
+        return entryPoint;
+    }
+    public GameObject getExitPoint()
+    {
+        return exitPoint;
     }
 
 

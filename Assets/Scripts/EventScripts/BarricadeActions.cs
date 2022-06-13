@@ -26,6 +26,15 @@ public class BarricadeActions : MonoBehaviour
             collectPlayer(enterer);
         }
 
+        if(enterer.gameObject.transform.parent.tag == "Zombie")
+        {
+            Debug.Log("Zombie detected in entry");
+           GameObject zed = enterer.gameObject.transform.parent.gameObject;
+           if(zed.GetComponent<ZombNav>().getIsInside() == false)
+           zed.GetComponent<ZombNav>().setTargetEntry(gameObject);
+           zed.GetComponent<ZombNav>().setAtWindow(true);
+        }
+
     }
 
         void OnTriggerExit (Collider Exiter)
