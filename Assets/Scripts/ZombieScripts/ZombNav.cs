@@ -13,7 +13,15 @@ public class ZombNav : MonoBehaviour
     private EntryManager entryManager;
     private WaveManager waveManager;
 
+    private GameObject targetEntry;
+
+    #region bools
     private bool isInside;
+    private bool interruptMove;
+    private bool canMove;
+    private bool atWindow;
+    private bool isBusy;
+    #endregion 
 
     // Start is called before the first frame update
     void Start()
@@ -44,16 +52,33 @@ public class ZombNav : MonoBehaviour
     {
         while (true)
         {
-            navTarget = calculateNavTarget().transform;
-            nm.SetDestination(navTarget.position);
-            yield return new WaitForSeconds(0.5f);
+            if (atWindow == true && isBusy == false)
+            {
+                isBusy = true;
+                StartCoroutine(attemptEntry());
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            if (canMove == true && isBusy == false)
+            {
+                navTarget = calculateNavTarget().transform;
+                nm.SetDestination(navTarget.position);
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            yield return new WaitForSeconds(0.2f);
         }
+
     }
 
+    
 
-
+    //functions, not coroutines
+    #region functions  
     private GameObject calculateNavTarget()
     {
+
+
         if (isInside == true)
         {
             return calculateNearestPlayerNav();
@@ -116,7 +141,61 @@ public class ZombNav : MonoBehaviour
         return closest;
     }
 
+    #endregion
 
 
+    #region coroutines
+    IEnumerator attemptEntry()
+    {
+        BarricadeController TEBC;
+        int barHealth;
+
+        TEBC = targetEntry.GetComponent<BarricadeController>();
+        barHealth = TEBC.getBarHealth();
+        if(barHealth > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            targetEntry.GetComponent<BarricadeController>().updateBoards(false);
+        } else 
+        {
+            //enter coroutine
+        }
+
+        yield return new WaitForSeconds(0.3f);
+        isBusy = false;
+    }
+
+    #endregion
+
+    #region gets&sets  
+    public void setCanMove(bool to)
+    {
+        canMove = to;
+    }
+
+    public bool getCanMove()
+    {
+        return canMove;
+    }
+
+    public void setInterruptMove(bool to)
+    {
+        interruptMove = to;
+    }
+
+    public bool getInterruptMove()
+    {
+        return interruptMove;
+    }
+
+    public void setAtWindow(bool to)
+    {
+        atWindow = to;
+    }
+    public bool getAtWindow()
+    {
+        return atWindow;
+    }
+     #endregion 
 
 }

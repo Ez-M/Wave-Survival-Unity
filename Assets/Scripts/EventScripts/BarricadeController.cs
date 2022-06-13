@@ -86,5 +86,10 @@ public class BarricadeController : MonoBehaviour
     }
 
 
+    public int getBarHealth()
+    {
+        return barHealth;
+    }
+
 
 }
