@@ -14,6 +14,7 @@ public class ZombNav : MonoBehaviour
     private WaveManager waveManager;
 
     private GameObject targetEntry;
+    private GameObject boundingBox;
 
     #region bools
     private bool isInside;
@@ -42,7 +43,8 @@ public class ZombNav : MonoBehaviour
     {
         nm = gameObject.GetComponent<NavMeshAgent>();
         zombAI = this.GetComponent<ZombAI>();
-        zombAI.getManagers(out gameManager, out waveManager, out entryManager);
+        zombAI.getManagers(out gameManager, out waveManager, out entryManager, out boundingBox);
+        
         isInside = false;
         canMove = true;
         isBusy = false;
@@ -50,6 +52,8 @@ public class ZombNav : MonoBehaviour
         atWindow = false;
     }
 
+
+    
 
 
     IEnumerator think()
@@ -65,17 +69,40 @@ public class ZombNav : MonoBehaviour
             if (canMove == true && isBusy == false)
             {
                 float targetRange;
-                 calculateNavTarget(out navTarget, out targetRange);
+                
+                
+                calculateNavTarget(out navTarget, out targetRange);
 
-                if(navTarget.tag == "Player" && targetRange < zombAI.meleeRange)
-                nm.SetDestination(navTarget.transform.position);
-                yield return new WaitForSeconds(0.2f);
+                StartCoroutine(zombAI.meleePlayer(navTarget, targetRange));   
+
+                           
+
+                if(targetRange < zombAI.meleeRange/1.5f)
+                {
+                    nm.speed = 0f;
+                } else if(targetRange < zombAI.meleeRange)
+                {
+                     nm.speed = 1f;
+                } else 
+                {
+                    nm.speed = 3.5f;
+                }
+                
+                
+                
+                    nm.SetDestination(navTarget.transform.position);
+                    yield return new WaitForSeconds(0.2f);
+                
+                
+                
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
     }
+
+     
 
     
 

@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour
 
     public float score;
 
+    private float playerHP;
+
 
 
 
@@ -95,6 +97,30 @@ public class PlayerManager : MonoBehaviour
         activeWeapon = weapon;
         activeShoot = activeWeapon.GetComponentInChildren<PlayerShoot>();         
     }
+
+
+    #region HP functions
+    public void setPlayerHP(float to)
+    {
+        playerHP = to;
+    }
+
+    public float updatePlayerHP(bool hurt, float strength)
+    {
+        if(hurt == true)
+        {
+            playerHP -= strength;
+            Debug.Log("Player Hurt! HP: "+playerHP);
+            return playerHP;            
+        } else 
+        {
+            playerHP += strength;
+            Debug.Log("Player Heal! HP: "+playerHP);
+            return playerHP;
+        }
+    }
+
+    #endregion
 
 
 }

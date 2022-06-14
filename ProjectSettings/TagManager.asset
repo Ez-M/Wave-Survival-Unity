@@ -9,6 +9,7 @@ TagManager:
   - UI
   - Spawner
   - GameManager
+  - Zombie
   layers:
   - Default
   - TransparentFX

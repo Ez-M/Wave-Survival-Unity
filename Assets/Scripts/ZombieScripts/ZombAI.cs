@@ -6,13 +6,14 @@ public class ZombAI : MonoBehaviour
 {
     public float health = 4.0f,  moveSpeed = 1f;
     private float LLH = 2f, RLH = 2f, RAH = 2f, LAH = 2f, armor = 5f;
-    public float meleeAttack = 1f, meleeRange = 1f, meleeFrequency=1f, meleeKnock = 1f;
+    public float meleeAttack = 1f, meleeRange = 4f, meleeFrequency=1f, meleeKnock = 1f;
     public float projectileRange = 1f, projectileSpeed = 1f, projectileFrequency = 1f, projectileKnock =1f;
 
     private GameManager gameManager;
     private WaveManager waveManager;
     private EntryManager entryManager;
     private ZombNav zombNav;
+    private GameObject boundingBox;
 
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class ZombAI : MonoBehaviour
         waveManager = gameManager.gameObject.GetComponent<WaveManager>();
         entryManager = gameManager.GetComponent<EntryManager>();
         zombNav = this.GetComponent<ZombNav>();
+        boundingBox = gameObject.transform.Find("BoundingBox").gameObject;
         
     }
 
@@ -96,28 +98,40 @@ public class ZombAI : MonoBehaviour
     }
     
 
-    public bool meleePlayer(GameObject navTarget, float targetRange)
+    public IEnumerator meleePlayer(GameObject navTarget, float targetRange)
     {
         
         if(navTarget.tag == "Player" && targetRange < meleeRange)
                 {
+
+                    Debug.Log("Player is in melee range!");
                     RaycastHit hit;
                     Vector3 attackDirection;
                     attackDirection = gameObject.transform.position - navTarget.transform.position;
-                    if (Physics.Raycast (gameObject.transform.position, attackDirection , out hit, meleeRange, 1 ,QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast (gameObject.transform.position, attackDirection , out hit, meleeRange, LayerMask.GetMask("Player") ,QueryTriggerInteraction.Ignore)) //  && hit.collider.gameObject == navTarget
                     {
-                        return true;
-                    } else {return false;}
+                        Debug.Log("First raycast hit");
+                        yield return new WaitForSeconds(0.07f);
+                        attackDirection = gameObject.transform.position - navTarget.transform.position;
+                        if (Physics.Raycast (gameObject.transform.position, attackDirection , out hit, meleeRange, LayerMask.GetMask("Player") ,QueryTriggerInteraction.Ignore))
+                        {
+                            hit.collider.transform.parent.GetComponent<PlayerManager>().updatePlayerHP(true, meleeAttack);
+                        }
 
-                }   else {return false;}
+
+                       yield return true;
+                    } else {yield return false;}
+
+                }   else {yield return false;}
     }
 
 
-    public void getManagers(out GameManager out1, out WaveManager out2, out EntryManager out3)
+    public void getManagers(out GameManager out1, out WaveManager out2, out EntryManager out3, out GameObject out4)
     {
         out1 = gameManager;
         out2 = waveManager;
         out3 = entryManager;
+        out4 = boundingBox;
     } 
 
     // rayTrace -> onhit save hit -> run hit.target.parent.onDamage(weaponProfile, hit.target, player.id)
