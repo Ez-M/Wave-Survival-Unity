@@ -7,7 +7,7 @@ public class ZombNav : MonoBehaviour
 {
 
     private NavMeshAgent nm;
-    public Transform navTarget;
+    public GameObject navTarget;
     private ZombAI zombAI;
     private GameManager gameManager;
     private EntryManager entryManager;
@@ -64,8 +64,11 @@ public class ZombNav : MonoBehaviour
 
             if (canMove == true && isBusy == false)
             {
-                navTarget = calculateNavTarget().transform;
-                nm.SetDestination(navTarget.position);
+                float targetRange;
+                 calculateNavTarget(out navTarget, out targetRange);
+
+                if(navTarget.tag == "Player" && targetRange < zombAI.meleeRange)
+                nm.SetDestination(navTarget.transform.position);
                 yield return new WaitForSeconds(0.2f);
             }
 
@@ -78,22 +81,22 @@ public class ZombNav : MonoBehaviour
 
     //functions, not coroutines
     #region functions  
-    private GameObject calculateNavTarget()
+    private void calculateNavTarget(out GameObject navTarget, out float targetRange)
     {
 
 
         if (isInside == true)
         {
-            return calculateNearestPlayerNav();
+         calculateNearestPlayerNav(out navTarget, out targetRange);
         }
         else
         {
-            return calculateNearestEntry();
+         calculateNearestEntry(out navTarget, out targetRange);
         }
 
     }
 
-    private GameObject calculateNearestEntry()
+    private void calculateNearestEntry(out GameObject navTarget, out float targetRange)
     {
         // >find nearest window, if targetWindow.isValie==true >>> move to targetWindow.child("entryPoint")
         // >if (isInside)
@@ -103,45 +106,53 @@ public class ZombNav : MonoBehaviour
             // GameObject[] entries;
             // entries = entryManager.availableEntries;
             GameObject closest = null;
-            float distance = Mathf.Infinity;
+            float closeDistance = Mathf.Infinity;
             Vector3 pos = transform.position;
             foreach (GameObject entry in entryManager.availableEntries)
             {
                 Vector3 diff = entry.transform.position - pos;
                 float curDistance = diff.sqrMagnitude;
-                if (curDistance < distance)
+                if (curDistance < closeDistance)
                 {
                     closest = entry;
-                    distance = curDistance;
+                    closeDistance = curDistance;
                 }
             }
 
 
-            return closest.transform.Find("entryPoint").gameObject; //placeholder
+            navTarget = closest.transform.Find("entryPoint").gameObject; //placeholder
+            targetRange = closeDistance;
         }
-        else { return null; }
+        else
+        {
+            navTarget = null;
+            targetRange = 0f;
+        }
+        
 
     }
 
 
-    private GameObject calculateNearestPlayerNav()
+    private void calculateNearestPlayerNav(out GameObject navTarget, out float targetRange)
     {
         GameObject[] players;
         players = GameObject.FindGameObjectsWithTag("Player");
         GameObject closest = null;
-        float distance = Mathf.Infinity;
+        float closeDistance = Mathf.Infinity;
         Vector3 pos = transform.position;
         foreach (GameObject player in players)
         {
             Vector3 diff = player.transform.position - pos;
             float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            if (curDistance < closeDistance)
             {
                 closest = player;
-                distance = curDistance;
+                closeDistance = curDistance;
             }
         }
-        return closest;
+        navTarget = closest;
+        targetRange = closeDistance;
+        
     }
 
     #endregion
@@ -153,12 +164,12 @@ public class ZombNav : MonoBehaviour
         BarricadeController TEBC;
         int barHealth;
 
-        TEBC = targetEntry.GetComponent<BarricadeController>();
+        TEBC = targetEntry.transform.parent.GetComponent<BarricadeController>();
         barHealth = TEBC.getBarHealth();
         if(barHealth > 0)
         {
             yield return new WaitForSeconds(1f);
-            targetEntry.GetComponent<BarricadeController>().updateBoards(false);
+            TEBC.updateBoards(false);
         } else 
         {
             bool check = TEBC.getIsOccupied();
@@ -176,16 +187,21 @@ public class ZombNav : MonoBehaviour
         Vector3 myPos = this.gameObject.transform.position;
         GameObject exitPoint = TEBC.getExitPoint();
         Vector3 targetPos = exitPoint.transform.position;
-        int timer = 5;
-        while(timer > 0)
+        int timer = 0;
+        gameObject.GetComponent<NavMeshAgent>().enabled=false;
+        while(timer < 5)
         {
-            this.gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPos, 1*Time.deltaTime);
+            this.gameObject.transform.position = Vector3.Lerp(myPos, targetPos, 0.2f*timer);
+            timer++;
             yield return new WaitForSeconds(0.5f);
         }
-        if (timer == 0)
+        if (timer >= 5)
         {
             setIsInside(true);
+            setAtWindow(false);
         }
+        gameObject.GetComponent<NavMeshAgent>().enabled=true;
+
         
         //         gun.transform.localPosition = Vector3.Lerp(gun.transform.localPosition, ADSPosition.transform.localPosition, ADSSpeed * Time.deltaTime);
 

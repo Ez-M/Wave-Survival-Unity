@@ -94,6 +94,23 @@ public class ZombAI : MonoBehaviour
             waveManager.hasDied();
             }
     }
+    
+
+    public bool meleePlayer(GameObject navTarget, float targetRange)
+    {
+        
+        if(navTarget.tag == "Player" && targetRange < meleeRange)
+                {
+                    RaycastHit hit;
+                    Vector3 attackDirection;
+                    attackDirection = gameObject.transform.position - navTarget.transform.position;
+                    if (Physics.Raycast (gameObject.transform.position, attackDirection , out hit, meleeRange, 1 ,QueryTriggerInteraction.Ignore))
+                    {
+                        return true;
+                    } else {return false;}
+
+                }   else {return false;}
+    }
 
 
     public void getManagers(out GameManager out1, out WaveManager out2, out EntryManager out3)

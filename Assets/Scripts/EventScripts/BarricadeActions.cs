@@ -21,6 +21,7 @@ public class BarricadeActions : MonoBehaviour
 
     void OnTriggerEnter(Collider enterer)
     {
+        Debug.Log(enterer);
         if(enterer.tag == "Player")
         {
             collectPlayer(enterer);
@@ -31,8 +32,11 @@ public class BarricadeActions : MonoBehaviour
             Debug.Log("Zombie detected in entry");
            GameObject zed = enterer.gameObject.transform.parent.gameObject;
            if(zed.GetComponent<ZombNav>().getIsInside() == false)
+           {
            zed.GetComponent<ZombNav>().setTargetEntry(gameObject);
            zed.GetComponent<ZombNav>().setAtWindow(true);
+           }
+
         }
 
     }
