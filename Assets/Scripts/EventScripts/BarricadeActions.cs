@@ -29,12 +29,13 @@ public class BarricadeActions : MonoBehaviour
 
         if(enterer.gameObject.transform.parent.tag == "Zombie")
         {
-            Debug.Log("Zombie detected in entry");
+            // Debug.Log("Zombie detected in entry");
            GameObject zed = enterer.gameObject.transform.parent.gameObject;
-           if(zed.GetComponent<ZombAI>().getIsInside() == false)
+           ZombAI zedAi = zed.GetComponent<ZombAI>();
+           if(zedAi.aiState == ZombAI.AIState.approaching)
            {
-           zed.GetComponent<ZombAI>().setTargetEntry(gameObject);
-           zed.GetComponent<ZombAI>().setAtWindow(true);
+           zedAi.setTargetEntry(gameObject);
+           zedAi.setAtWindow(true);
            }
 
         }
