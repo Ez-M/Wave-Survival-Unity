@@ -8,7 +8,7 @@ public class ZombAI : MonoBehaviour
 
     #region mobStats
 
-    public float health = 4.0f, moveSpeed = 1f;
+    public float health = 4.0f, moveSpeed = 3.5f;
     private float LLH = 2f, RLH = 2f, RAH = 2f, LAH = 2f, armor = 5f;
     public float meleeAttack = 1f, meleeRange = 4f, meleeFrequency = 1f, meleeKnock = 1f;
     public float projectileRange = 1f, projectileSpeed = 1f, projectileFrequency = 1f, projectileKnock = 1f;
@@ -28,7 +28,9 @@ public class ZombAI : MonoBehaviour
 
     public AIState aiState = AIState.approaching;
 
-    private float targetRange;
+    private LayerMask attackMask;
+
+    private float targetDis;
 
 
     #region bools
@@ -62,6 +64,7 @@ public class ZombAI : MonoBehaviour
 
     public void init()
     {
+        attackMask = LayerMask.GetMask("Player", "Wall");
         nm = gameObject.GetComponent<NavMeshAgent>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         waveManager = gameManager.gameObject.GetComponent<WaveManager>();
@@ -86,17 +89,19 @@ public class ZombAI : MonoBehaviour
             switch (aiState)
             {
                 case AIState.idle:
+                //idle state, do nothing, don't move, play idle animation if applicable
                     break;
 
                 case AIState.approaching:
                     if (atWindow == true && isBusy == false)
-                    {
+                    {   //check if the zombie is at a window, and attempt to enter that window
                         isBusy = true;
                         yield return attemptEntry();
                     }
                     else
                     {
-                        calculateNavTarget();
+                        //if not in a window, move towards the nearest window
+                        calculateNearestEntry();
                         nm.SetDestination(navTarget.transform.position);
                     }
 
@@ -105,10 +110,30 @@ public class ZombAI : MonoBehaviour
                 case AIState.entering:
                     break;
                 case AIState.chasing:
-                    calculateNavTarget();
+                    calculateNearestPlayerNav();
+                    if (targetDis > meleeRange)
+                    {   //if target is out of attack range, continue moving as normal
+                        nm.speed = moveSpeed;
+                    }
+                    else if (targetDis < meleeRange)
+                    { 
+                        //if target is in attack range, stop moving, and attack
+                        
+                        aiState = AIState.attacking;
+                        nm.SetDestination(gameObject.transform.position);
+                    }
                     nm.SetDestination(navTarget.transform.position);
                     break;
                 case AIState.attacking:
+                calculateNearestPlayerNav();
+                nm.SetDestination(gameObject.transform.position);
+
+                yield return meleePlayer();
+                if(targetDis > meleeRange)
+                {
+                    aiState = AIState.chasing;
+                }
+
                     break;
                 default:
                     break;
@@ -163,12 +188,12 @@ public class ZombAI : MonoBehaviour
 
 
             navTarget = closest.transform.Find("entryPoint").gameObject; //placeholder
-            targetRange = closeDistance;
+            targetDis = closeDistance;
         }
         else
         {
             navTarget = null;
-            targetRange = 0f;
+            targetDis = 0f;
         }
 
 
@@ -197,7 +222,7 @@ public class ZombAI : MonoBehaviour
             }
         }
         navTarget = closest;
-        targetRange = closeDistance;
+        targetDis = closeDistance;
 
     }
 
@@ -329,23 +354,26 @@ public class ZombAI : MonoBehaviour
     }
 
 
-    public IEnumerator meleePlayer(GameObject navTarget, float targetRange)
+    public IEnumerator meleePlayer()
     {
 
-        if (navTarget.tag == "Player" && targetRange < meleeRange)
+        if (navTarget.tag == "Player" && targetDis < meleeRange)
         {
 
-            Debug.Log("Player is in melee range!");
+            // Debug.Log("Player is in melee range!");
             RaycastHit hit;
             Vector3 attackDirection;
-            attackDirection = gameObject.transform.position - navTarget.transform.position;
-            if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, LayerMask.GetMask("Player"), QueryTriggerInteraction.Ignore)) //  && hit.collider.gameObject == navTarget
+            attackDirection = navTarget.transform.position - gameObject.transform.position;
+            Debug.DrawRay(gameObject.transform.position, attackDirection*10, Color.green);
+            if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, attackMask, QueryTriggerInteraction.Ignore)) //  && hit.collider.gameObject == navTarget
             {
-                Debug.Log("First raycast hit");
-                yield return new WaitForSeconds(0.07f);
-                attackDirection = gameObject.transform.position - navTarget.transform.position;
-                if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, LayerMask.GetMask("Player"), QueryTriggerInteraction.Ignore))
+                // Debug.Log(hit);
+                // Debug.Log("First raycast hit");
+                yield return new WaitForSeconds(0.1f);
+                attackDirection = navTarget.transform.position - gameObject.transform.position;
+                if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, attackMask, QueryTriggerInteraction.Ignore))
                 {
+                    Debug.Log("Player hit confirm");
                     hit.collider.transform.parent.GetComponent<PlayerManager>().updatePlayerHP(true, meleeAttack);
                 }
 

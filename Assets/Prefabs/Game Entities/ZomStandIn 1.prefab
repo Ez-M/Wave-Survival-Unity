@@ -412,7 +412,7 @@ MonoBehaviour:
   health: 4
   moveSpeed: 1
   meleeAttack: 1
-  meleeRange: 2.5
+  meleeRange: 3.5
   meleeFrequency: 1
   meleeKnock: 1
   projectileRange: 1

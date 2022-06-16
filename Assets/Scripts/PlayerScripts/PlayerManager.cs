@@ -66,6 +66,7 @@ public class PlayerManager : MonoBehaviour
         playerHead = leanPoint.transform.GetChild(0).gameObject;
         playerCam = playerHead.transform.GetChild(0).gameObject.GetComponent<Camera>();
         gunCam = playerCam.transform.GetChild(0).gameObject.GetComponent<Camera>();
+        playerHP = 10;
 
         characterController = playerCap.GetComponent<CharacterController>();
 
