@@ -39,6 +39,7 @@ public class ZombAI : MonoBehaviour
     private bool canMove;
     private bool atWindow;
     private bool isBusy;
+    private bool isDead;
 
     #endregion 
 
@@ -64,6 +65,7 @@ public class ZombAI : MonoBehaviour
 
     public void init()
     {
+    
         attackMask = LayerMask.GetMask("Player", "Wall");
         nm = gameObject.GetComponent<NavMeshAgent>();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -79,6 +81,7 @@ public class ZombAI : MonoBehaviour
         isBusy = false;
         interruptMove = false;
         atWindow = false;
+        isDead = false;
     }
 
 
@@ -289,68 +292,77 @@ public class ZombAI : MonoBehaviour
 
     public void Damage(PlayerShoot profileIn, GameObject target)
     {
-        float damageIn = profileIn.gunDam;
-        //    float limbMulti = profileIn.limbMulti;
-        switch (target.name)
+        if (health > 0)
         {
-            case "ZRLeg":
-                RLH -= damageIn;
-                if (RLH <= 0) { Destroy(target); }
-                health -= damageIn * 0.6f;
-                Debug.Log("Rleg hit for " + damageIn * 0.6f);
-                profileIn.hitScore(10f);
-                break;
+            float damageIn = profileIn.gunDam;
+            //    float limbMulti = profileIn.limbMulti;
+            switch (target.name)
+            {
+                case "ZRLeg":
+                    RLH -= damageIn;
+                    if (RLH <= 0) { Destroy(target); }
+                    health -= damageIn * 0.6f;
+                    Debug.Log("Rleg hit for " + damageIn * 0.6f);
+                    profileIn.hitScore(10f);
+                    break;
 
-            case "ZLLeg":
-                LLH -= damageIn;
-                if (LLH <= 0) { Destroy(target); }
-                health -= damageIn * 0.6f;
-                Debug.Log("Lleg hit for " + damageIn * 0.6f);
-                profileIn.hitScore(10f);
-                break;
+                case "ZLLeg":
+                    LLH -= damageIn;
+                    if (LLH <= 0) { Destroy(target); }
+                    health -= damageIn * 0.6f;
+                    Debug.Log("Lleg hit for " + damageIn * 0.6f);
+                    profileIn.hitScore(10f);
+                    break;
 
-            case "ZRArm":
-                RAH -= damageIn;
-                if (RAH <= 0) { Destroy(target); }
-                health -= damageIn * 0.6f;
-                Debug.Log("Rarm hit for " + damageIn * 0.6f);
-                profileIn.hitScore(10f);
-                break;
-            case "ZLArm":
-                LAH -= damageIn;
-                if (LAH <= 0) { Destroy(target); }
-                health -= damageIn * 0.6f;
-                Debug.Log("Larm hit for " + damageIn * 0.6f);
-                profileIn.hitScore(10f);
-                break;
+                case "ZRArm":
+                    RAH -= damageIn;
+                    if (RAH <= 0) { Destroy(target); }
+                    health -= damageIn * 0.6f;
+                    Debug.Log("Rarm hit for " + damageIn * 0.6f);
+                    profileIn.hitScore(10f);
+                    break;
+                case "ZLArm":
+                    LAH -= damageIn;
+                    if (LAH <= 0) { Destroy(target); }
+                    health -= damageIn * 0.6f;
+                    Debug.Log("Larm hit for " + damageIn * 0.6f);
+                    profileIn.hitScore(10f);
+                    break;
 
-            case "ZHead":
-                health -= damageIn * 2f;
-                Debug.Log("Head hit for " + damageIn * 2f);
-                profileIn.hitScore(60f);
-                break;
+                case "ZHead":
+                    health -= damageIn * 2f;
+                    Debug.Log("Head hit for " + damageIn * 2f);
+                    profileIn.hitScore(60f);
+                    break;
 
-            case "ZTorso":
-                health -= damageIn;
-                Debug.Log("Torso hit for " + damageIn);
-                profileIn.hitScore(10f);
-                break;
+                case "ZTorso":
+                    health -= damageIn;
+                    Debug.Log("Torso hit for " + damageIn);
+                    profileIn.hitScore(10f);
+                    break;
 
-            case "armor":
-                armor -= damageIn;
-                if (armor <= 0) { Destroy(target); }
-                // health -= damageIn*0.6f;
-                Debug.Log("armor hit for " + damageIn * 0.6f);
-                break;
+                case "armor":
+                    armor -= damageIn;
+                    if (armor <= 0) { Destroy(target); }
+                    // health -= damageIn*0.6f;
+                    Debug.Log("armor hit for " + damageIn * 0.6f);
+                    break;
 
 
-        }
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-            Debug.Log("Blooped `em");
-            profileIn.hitScore(130f);
-            waveManager.hasDied();
+            }
+            if (isDead == false)
+            {
+
+
+                if (health <= 0)
+                {
+                    isDead=true;
+                    Destroy(gameObject);
+                    Debug.Log("Blooped `em");
+                    profileIn.hitScore(130f);
+                    waveManager.hasDied();
+                }
+            }
         }
     }
 

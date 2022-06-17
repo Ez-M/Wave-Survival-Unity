@@ -125,8 +125,10 @@ public class InventoryController : MonoBehaviour
                 tempWeapon = Instantiate(weaponIn, gunCam.transform) as GameObject; //variable to track new item
            
                 weaponsGot.Add(tempWeapon); //add the new weapon to our inventory list
-                tempWeapon.transform.GetChild(0).GetChild(1).GetComponent<PlayerShoot>().gunInit(); //run guninit
+                // tempWeapon.transform.GetChild(0).GetChild(1).GetComponent<PlayerShoot>().gunInit(); //run guninit
+                
                 changeWeapon(weaponsGot.IndexOf(tempWeapon));
+                tempWeapon.transform.GetChild(0).GetChild(1).BroadcastMessage("gunInit"); //run guninit
 
             } else 
             {  // if (weaponCheck == false) //if weapon check is false, perform newWeaponGot
@@ -138,8 +140,10 @@ public class InventoryController : MonoBehaviour
             tempWeapon = Instantiate(weaponIn, gunCam.transform) as GameObject; //create new weapon
            
             weaponsGot[currentWeaponInt] = tempWeapon; //add the new weapon to our inventory list
-            tempWeapon.transform.GetChild(0).GetChild(1).GetComponent<PlayerShoot>().gunInit(); //run guninit
+            // tempWeapon.transform.GetChild(0).GetChild(1).GetComponent<PlayerShoot>().gunInit(); //run guninit
+            
             changeWeapon(currentWeaponInt);
+            tempWeapon.transform.GetChild(0).GetChild(1).BroadcastMessage("gunInit"); //run guninit
             
              }
         
