@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WeaponPurchase : MonoBehaviour
+public class DoorPurchase : MonoBehaviour
 {
 
     public GameObject saleItem;
@@ -24,6 +24,8 @@ public class WeaponPurchase : MonoBehaviour
     private InventoryController inventoryController;
 
     private DefaultInput defaultInput;
+
+    public List<GameObject> attachedEntries = new List<GameObject>();
 
     
     
@@ -98,7 +100,11 @@ public class WeaponPurchase : MonoBehaviour
     public void buyFunction(InputAction.CallbackContext context)
     {
         Debug.Log("Input Test");    
-        inventoryController.newWeaponGot(saleItem);
+        foreach (var potat in attachedEntries)
+        {
+            potat.GetComponent<BarricadeAutoAdd>().addBarricade();
+        }
+        this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 
     public void OnInteractPressed (InputAction.CallbackContext value)
