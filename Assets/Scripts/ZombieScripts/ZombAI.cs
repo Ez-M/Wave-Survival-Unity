@@ -89,7 +89,7 @@ public class ZombAI : MonoBehaviour
             switch (aiState)
             {
                 case AIState.idle:
-                //idle state, do nothing, don't move, play idle animation if applicable
+                    //idle state, do nothing, don't move, play idle animation if applicable
                     break;
 
                 case AIState.approaching:
@@ -116,24 +116,25 @@ public class ZombAI : MonoBehaviour
                         nm.speed = moveSpeed;
                     }
                     else if (targetDis < meleeRange)
-                    { 
+                    {
                         //if target is in attack range, stop moving, and attack
-                        
+
                         aiState = AIState.attacking;
                         nm.SetDestination(gameObject.transform.position);
                     }
                     nm.SetDestination(navTarget.transform.position);
                     break;
                 case AIState.attacking:
-                calculateNearestPlayerNav();
-                nm.SetDestination(gameObject.transform.position);
+                    calculateNearestPlayerNav();
+                    nm.SetDestination(gameObject.transform.position);
 
-                yield return meleePlayer();
-                if(targetDis > meleeRange)
-                {
-                    aiState = AIState.chasing;
-                }
-
+                    yield return meleePlayer();
+                    if (targetDis > meleeRange)
+                    {
+                        aiState = AIState.chasing;
+                        break;
+                    }
+                    yield return new WaitForSeconds(0.2f);
                     break;
                 default:
                     break;
@@ -262,7 +263,7 @@ public class ZombAI : MonoBehaviour
         {
             this.gameObject.transform.position = Vector3.Lerp(myPos, targetPos, 0.2f * timer);
             timer++;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
         }
         if (timer >= 5)
         {
@@ -364,19 +365,19 @@ public class ZombAI : MonoBehaviour
             RaycastHit hit;
             Vector3 attackDirection;
             attackDirection = navTarget.transform.position - gameObject.transform.position;
-            Debug.DrawRay(gameObject.transform.position, attackDirection*10, Color.green);
+            Debug.DrawRay(gameObject.transform.position, attackDirection * 10, Color.green);
             if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, attackMask, QueryTriggerInteraction.Ignore)) //  && hit.collider.gameObject == navTarget
             {
                 // Debug.Log(hit);
                 // Debug.Log("First raycast hit");
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.2f);
                 attackDirection = navTarget.transform.position - gameObject.transform.position;
                 if (Physics.Raycast(gameObject.transform.position, attackDirection, out hit, meleeRange, attackMask, QueryTriggerInteraction.Ignore))
                 {
                     Debug.Log("Player hit confirm");
                     hit.collider.transform.parent.GetComponent<PlayerManager>().updatePlayerHP(true, meleeAttack);
                 }
-
+                yield return new WaitForSeconds(0.2f);
 
                 yield return true;
             }
