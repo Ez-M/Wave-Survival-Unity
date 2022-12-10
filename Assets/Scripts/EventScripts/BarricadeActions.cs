@@ -56,7 +56,7 @@ public class BarricadeActions : MonoBehaviour
         DefaultInput defaultInput;
             // currentPlayer = enterer.transform.root.GetComponent<PlayerManager>();
             // playerController = currentPlayer.GetComponentInChildren<PlayerController>();
-            defaultInput = enterer.GetComponentInChildren<PlayerController>().passInputs();
+            defaultInput = enterer.GetComponentInParent<PlayerInputHandler>().passInputs();
 
             defaultInput.Character.Interact.performed += barCon.repairBoard;
             defaultInput.Inventory.TempAction1.performed +=barCon.damageBoards;
@@ -67,7 +67,7 @@ public class BarricadeActions : MonoBehaviour
         private  void discardPlayer(Collider exiter)
     {       
         DefaultInput defaultInput;
-        defaultInput = exiter.GetComponentInChildren<PlayerController>().passInputs();
+        defaultInput = exiter.GetComponentInParent<PlayerInputHandler>().passInputs();
         defaultInput.Character.Interact.performed -= barCon.repairBoard;
         defaultInput.Inventory.TempAction1.performed -=barCon.damageBoards;
 

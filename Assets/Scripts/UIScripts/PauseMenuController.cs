@@ -5,7 +5,7 @@ using UnityEngine;
 public class PauseMenuController : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
-    public static bool gameIsPaused;
+    public bool gameIsPaused;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,9 @@ public class PauseMenuController : MonoBehaviour
     {
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-        gameIsPaused = true;
+        gameIsPaused = true;        
+        Cursor.visible=true;
+        Cursor.lockState = CursorLockMode.None;
 
     }
 
@@ -32,7 +34,8 @@ public class PauseMenuController : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         gameIsPaused = false;
-
+        Cursor.visible=false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void TogglePauseState()

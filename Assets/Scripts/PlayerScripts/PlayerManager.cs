@@ -32,6 +32,7 @@ public class PlayerManager : MonoBehaviour
     // [SerializeField] GameObject pauseMenuController;
     [SerializeField] GameObject UIParent;
     public PauseMenuController pauseMenuController;
+    public PlayerInputHandler playerInputHandler;
 
 
     // Start is called before the first frame update
@@ -42,6 +43,7 @@ public class PlayerManager : MonoBehaviour
 
         inventoryController.InventoryInit(this);        
         WUIC.WeaponUIInit(this);
+        playerInputHandler.inputInit(this);
         playerController.playerInit(this);
         
         inventoryController.postInit();
@@ -68,6 +70,7 @@ public class PlayerManager : MonoBehaviour
 
         inventoryController = gameObject.GetComponent<InventoryController>();
         pauseMenuController = gameObject.GetComponent<PauseMenuController>();
+        playerInputHandler = gameObject.GetComponent<PlayerInputHandler>();
        
         WeaponUI = UIParent.transform.Find("weaponUI").gameObject;
         WUIC = WeaponUI.GetComponent<WeaponUIController>();

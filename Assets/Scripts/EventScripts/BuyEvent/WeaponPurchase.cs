@@ -20,7 +20,7 @@ public class WeaponPurchase : MonoBehaviour
     public TMPro.TextMeshProUGUI CST;
 
     private PlayerManager currentPlayer;
-    private PlayerController playerController;
+    private PlayerInputHandler playerInputHandler;
     private InventoryController inventoryController;
 
     private DefaultInput defaultInput;
@@ -75,10 +75,10 @@ public class WeaponPurchase : MonoBehaviour
     {
 
             currentPlayer = enterer.transform.root.GetComponent<PlayerManager>();
-            playerController = currentPlayer.GetComponentInChildren<PlayerController>();
+            playerInputHandler = currentPlayer.GetComponent<PlayerInputHandler>();
             inventoryController = currentPlayer.inventoryController;
 
-            defaultInput = playerController.passInputs();
+            defaultInput = playerInputHandler.passInputs();
 
             defaultInput.Character.Interact.performed += buyFunction;
     }
@@ -89,7 +89,7 @@ public class WeaponPurchase : MonoBehaviour
 
             defaultInput = null;
             currentPlayer = null;
-            playerController = null;
+            playerInputHandler = null;
             inventoryController = null;
 
     }

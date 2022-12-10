@@ -45,23 +45,18 @@ public class PlayerShoot : MonoBehaviour
     private GameObject playerHead;
     private Camera playerCam;
     private Camera gunCam;
-
     private PlayerController playerController;
-
     private GameObject WeaponUI;
-
     private WeaponUIController WUIC;
-
     public InventoryController inventoryController;
-
     private TMPro.TextMeshProUGUI ScoreCard;
     private TMPro.TextMeshProUGUI AmmoCounter;
     private TMPro.TextMeshProUGUI CST; //centerscreentext
-
     private Transform gunEnd;
     public GameObject gun, hipPosition, ADSPosition;
-
     private CharacterController characterController;
+    private PlayerInputHandler playerInputHandler;
+
 
     #endregion
 
@@ -159,6 +154,8 @@ public class PlayerShoot : MonoBehaviour
         characterController = playerCap.GetComponent<CharacterController>();
 
         inventoryController = playerManager.gameObject.GetComponent<InventoryController>();
+        playerInputHandler = playerManager.playerInputHandler;
+
 
 
         WeaponUI = playerManager.WeaponUI;
@@ -194,9 +191,9 @@ public class PlayerShoot : MonoBehaviour
 
     private void collectInputs()
     {
-        input_Fire1 = playerController.input_Fire1;
-        input_Fire2 = playerController.input_Fire2;
-        input_Reload = playerController.input_Reload;
+        input_Fire1 = playerInputHandler.input_Fire1;
+        input_Fire2 = playerInputHandler.input_Fire2;
+        input_Reload = playerInputHandler.input_Reload;
     }
 
     private IEnumerator ShotEffect()
@@ -250,7 +247,7 @@ public class PlayerShoot : MonoBehaviour
 
         calculateDispersion();
 
-        bool isFire = playerController.input_Fire1;
+        bool isFire = playerInputHandler.input_Fire1;
         if ((isFire == true && hasFired == false) || (isFire == true && gunIsAuto == true))
         {
 
