@@ -13,29 +13,25 @@ public class PlayerManager : MonoBehaviour
     public GameObject leanPoint;
     public GameObject playerHead;
     public Camera playerCam;
-    public Camera gunCam;    
-    
-
+    public Camera gunCam;
     public PlayerController playerController; 
-
     private CharacterController characterController;
-
     public GameObject WeaponUI;
     public GameObject activeWeapon;
     public PlayerShoot activeShoot;
 
     public WeaponUIController WUIC;
     public InventoryController inventoryController;
-
     public TMPro.TextMeshProUGUI ScoreCard;
     public TMPro.TextMeshProUGUI AmmoCounter;
     public TMPro.TextMeshProUGUI CST; //centerscreentext
-
+    
     public float score;
-
     private float playerHP;
 
-
+    // [SerializeField] GameObject pauseMenuController;
+    [SerializeField] GameObject UIParent;
+    public PauseMenuController pauseMenuController;
 
 
     // Start is called before the first frame update
@@ -71,13 +67,14 @@ public class PlayerManager : MonoBehaviour
         characterController = playerCap.GetComponent<CharacterController>();
 
         inventoryController = gameObject.GetComponent<InventoryController>();
-
-
-        WeaponUI = GameObject.Find("weaponUI");
+        pauseMenuController = gameObject.GetComponent<PauseMenuController>();
+       
+        WeaponUI = UIParent.transform.Find("weaponUI").gameObject;
         WUIC = WeaponUI.GetComponent<WeaponUIController>();
         ScoreCard = WeaponUI.transform.Find("ScoreCard").GetComponent<TMPro.TextMeshProUGUI>(); 
         AmmoCounter = WeaponUI.transform.Find("AmmoCounter").GetComponent<TMPro.TextMeshProUGUI>(); 
-        CST = GameObject.Find("CenterScreenText").GetComponent<TMPro.TextMeshProUGUI>();
+        CST = UIParent.transform.Find("CenterScreenText").GetComponent<TMPro.TextMeshProUGUI>();
+
     }
 
 

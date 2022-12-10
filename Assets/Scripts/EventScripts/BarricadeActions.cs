@@ -21,7 +21,7 @@ public class BarricadeActions : MonoBehaviour
 
     void OnTriggerEnter(Collider enterer)
     {
-        Debug.Log(enterer);
+        // Debug.Log(enterer);
         if(enterer.tag == "Player")
         {
             collectPlayer(enterer);

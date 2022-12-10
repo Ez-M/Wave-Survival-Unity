@@ -273,6 +273,15 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f5f5a56-5d33-4727-b4b4-e2578d04c6f1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -308,6 +317,45 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                     ""action"": ""TempAction1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ac03ed3-d69c-4eb1-80fa-e9639eb6f389"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""f948429d-a784-449a-882d-8abff908b78c"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa56325c-168e-48ec-b227-4edb3fc3d3a1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""14a29ec4-b6fd-4a04-8d09-f043ef656d51"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -331,6 +379,10 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         m_Inventory_Weapon1 = m_Inventory.FindAction("Weapon1", throwIfNotFound: true);
         m_Inventory_Weapon2 = m_Inventory.FindAction("Weapon2", throwIfNotFound: true);
         m_Inventory_TempAction1 = m_Inventory.FindAction("TempAction1", throwIfNotFound: true);
+        m_Inventory_OpenInventory = m_Inventory.FindAction("Open Inventory", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -507,6 +559,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Weapon1;
     private readonly InputAction m_Inventory_Weapon2;
     private readonly InputAction m_Inventory_TempAction1;
+    private readonly InputAction m_Inventory_OpenInventory;
     public struct InventoryActions
     {
         private @DefaultInput m_Wrapper;
@@ -514,6 +567,7 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         public InputAction @Weapon1 => m_Wrapper.m_Inventory_Weapon1;
         public InputAction @Weapon2 => m_Wrapper.m_Inventory_Weapon2;
         public InputAction @TempAction1 => m_Wrapper.m_Inventory_TempAction1;
+        public InputAction @OpenInventory => m_Wrapper.m_Inventory_OpenInventory;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -532,6 +586,9 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @TempAction1.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnTempAction1;
                 @TempAction1.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnTempAction1;
                 @TempAction1.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnTempAction1;
+                @OpenInventory.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnOpenInventory;
+                @OpenInventory.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnOpenInventory;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -545,10 +602,46 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
                 @TempAction1.started += instance.OnTempAction1;
                 @TempAction1.performed += instance.OnTempAction1;
                 @TempAction1.canceled += instance.OnTempAction1;
+                @OpenInventory.started += instance.OnOpenInventory;
+                @OpenInventory.performed += instance.OnOpenInventory;
+                @OpenInventory.canceled += instance.OnOpenInventory;
             }
         }
     }
     public InventoryActions @Inventory => new InventoryActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_Pause;
+    public struct UIActions
+    {
+        private @DefaultInput m_Wrapper;
+        public UIActions(@DefaultInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_UI_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @Pause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPause;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface ICharacterActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -568,5 +661,10 @@ public partial class @DefaultInput : IInputActionCollection2, IDisposable
         void OnWeapon1(InputAction.CallbackContext context);
         void OnWeapon2(InputAction.CallbackContext context);
         void OnTempAction1(InputAction.CallbackContext context);
+        void OnOpenInventory(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

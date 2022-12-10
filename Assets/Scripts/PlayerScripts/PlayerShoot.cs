@@ -24,8 +24,9 @@ public class PlayerShoot : MonoBehaviour
     public int ADSSpeed = 10;
 
     public bool gunIsAuto;
-
     #endregion
+
+
     public bool hasFired = false;
 
     public bool isReloading = false, hasAmmo = true;
@@ -363,12 +364,11 @@ public class PlayerShoot : MonoBehaviour
 
     private void weaponSecondary()
     {
-        bool isAim = input_Fire2;
-
-        if (isAim)
-        {
-            // Debug.Log("isAim");
-            gun.transform.localPosition = Vector3.Lerp(gun.transform.localPosition, ADSPosition.transform.localPosition, ADSSpeed * Time.deltaTime);
+    bool isAim=input_Fire2;
+    if(isAim)
+    {
+        // Debug.Log("isAim");
+    gun.transform.localPosition = Vector3.Lerp(gun.transform.localPosition, ADSPosition.transform.localPosition, ADSSpeed * Time.deltaTime);
         }
         else
         {

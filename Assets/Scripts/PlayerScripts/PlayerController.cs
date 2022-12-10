@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     private TMPro.TextMeshProUGUI AmmoCounter;
     private TMPro.TextMeshProUGUI CST; //centerscreentext
 
+    private PauseMenuController pauseMenuController;
+
     // private Transform gunEnd;   
     // public GameObject gun, hipPosition, ADSPosition;
     
@@ -75,6 +77,8 @@ public class PlayerController : MonoBehaviour
        public bool input_A1;
        public bool input_A2;
        public bool input_tempA;
+       public bool input_pause;
+       public bool input_inventory;
 
        #endregion
 
@@ -85,9 +89,6 @@ public class PlayerController : MonoBehaviour
         {
             return defaultInput;
         }
-
-
-
 
        private Vector3 newCameraRotation;
        private Vector3 newCharacterRotation;
@@ -120,6 +121,8 @@ public class PlayerController : MonoBehaviour
         public InputAction Weapon1;
         public InputAction Weapon2;
         public InputAction TempAction1;
+        public InputAction togglePause;
+        public InputAction toggleInventory;
 
 
 
@@ -141,6 +144,8 @@ public class PlayerController : MonoBehaviour
         Weapon1 = defaultInput.Inventory.Weapon1;
         Weapon2 = defaultInput.Inventory.Weapon2;
         TempAction1 = defaultInput.Inventory.TempAction1;
+        toggleInventory = defaultInput.Inventory.OpenInventory;
+        togglePause = defaultInput.UI.Pause;
 
         defaultInput.Character.Movement.performed += e => input_Movement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e =>  input_View =  e.ReadValue<Vector2>();
@@ -164,6 +169,8 @@ public class PlayerController : MonoBehaviour
         defaultInput.Inventory.Weapon2.performed += Alpha2isPressed;
         defaultInput.Inventory.TempAction1.performed += TempAction1isPressed;
 
+        defaultInput.UI.Pause.performed += togglePauseisPressed;
+        // defaultInput.Inventory.OpenInventory += toggleInventoryisPressed;
 
         
 
@@ -265,8 +272,8 @@ public class PlayerController : MonoBehaviour
         playerCam = playerManager.playerCam;
         gunCam = playerManager.gunCam;   
 
-        inventoryController = initializer.GetComponent<InventoryController>();
-
+        inventoryController = playerManager.GetComponent<InventoryController>();
+        pauseMenuController = playerManager.pauseMenuController;
 
 
         WeaponUI = playerManager.WeaponUI;
@@ -383,7 +390,11 @@ public class PlayerController : MonoBehaviour
         input_tempA = false;
     }
 
+    private void togglePauseisPressed(InputAction.CallbackContext value)
+    {
+        pauseMenuController.TogglePauseState();
 
+    }
 
     #endregion
     private void CalculateView()
