@@ -28,7 +28,7 @@ public class InventoryController : MonoBehaviour
     private PlayerController playerController; 
 
     private GameObject WeaponUI;
-    private GameObject activeWeapon;
+    [SerializeField] GameObject activeWeapon;
 
     private WeaponUIController WUIC;
 
@@ -58,9 +58,9 @@ public class InventoryController : MonoBehaviour
         #endregion
 
     private bool weaponCheck;
+    private PlayerShoot activeWeaponScript;
 
-        
-            private void Awake() 
+    private void Awake() 
      {
 
      }
@@ -170,11 +170,13 @@ public class InventoryController : MonoBehaviour
             Debug.Log("Weapon change check" + weaponTo);
             if(activeWeapon == true)
             {
+                activeWeaponScript.isReloading = false;
                 activeWeapon.SetActive(false); //set activeweapon to inactive before switching
             }
             
             activeWeapon = weaponsGot[weaponTo]; //switch the active weapon
             activeWeapon.SetActive(true); //set the new active weapon to true
+            activeWeaponScript = activeWeapon.transform.GetChild(0).GetComponentInChildren<PlayerShoot>();
             playerManager.setActiveWeapon(activeWeapon); //Sets the global active weapon
             WUIC.weaponChanged(weaponTo); //update relavant UI element
             currentWeaponInt = weaponTo;

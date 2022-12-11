@@ -85,13 +85,18 @@ public class WeaponPurchase : MonoBehaviour
 
 
     private  void discardPlayer(Collider exiter)
-    {       defaultInput.Character.Interact.performed -= buyFunction;    
+    {       try{
+            defaultInput = exiter.transform.root.GetComponent<PlayerInputHandler>().passInputs();
+            defaultInput.Character.Interact.performed -= buyFunction;    
 
-            defaultInput = null;
             currentPlayer = null;
             playerInputHandler = null;
+            defaultInput = null;
             inventoryController = null;
-
+            }
+            catch(System.Exception e){
+                print(e);
+            }
     }
 
 

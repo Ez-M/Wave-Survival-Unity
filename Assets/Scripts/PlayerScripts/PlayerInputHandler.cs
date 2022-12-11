@@ -131,7 +131,6 @@ public class PlayerInputHandler : MonoBehaviour
         Interact.canceled += InteractisReleased;
         Fire1.performed += Fire1isPressed;
         Fire1.canceled += Fire1isReleased;
-
         Fire2.performed += Fire2isPressed;
         Fire2.canceled += Fire2isReleased;
         Reload.performed += ReloadisPressed;
@@ -163,6 +162,12 @@ public class PlayerInputHandler : MonoBehaviour
         
     }
 
+    public void disableInputs(){
+        defaultInput.Disable();
+    }
+    public void enableInputs(){
+        defaultInput.Enable();
+    }
 
     #region  -INPUT FUNCTIONS-
     private void jumpisPressed(InputAction.CallbackContext value)
@@ -272,12 +277,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void togglePauseisPressed(InputAction.CallbackContext value)
     {
-        pauseMenuController.TogglePauseState();
+        pauseMenuController.TogglePauseState(this);
 
     }
     private void toggleInventoryisPressed(InputAction.CallbackContext value)
     {
-        pauseMenuController.TogglePauseState();
+        pauseMenuController.TogglePauseState(this);
 
     }
 
