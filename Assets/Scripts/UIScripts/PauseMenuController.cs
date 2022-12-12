@@ -6,7 +6,7 @@ public class PauseMenuController : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     private PlayerInputHandler player;
-    public bool gameIsPaused;
+    public static bool gameIsPaused;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,7 @@ public class PauseMenuController : MonoBehaviour
         gameIsPaused = true;        
         Cursor.visible=true;
         Cursor.lockState = CursorLockMode.None;
-        player.disableInputs();
+        player.pauseInputs();
 
     }
 
@@ -38,7 +38,7 @@ public class PauseMenuController : MonoBehaviour
         gameIsPaused = false;
         Cursor.visible=false;
         Cursor.lockState = CursorLockMode.Locked;
-        player.enableInputs();
+        player.unPauseInputs();
     }
 
     public void TogglePauseState(PlayerInputHandler playerIn)

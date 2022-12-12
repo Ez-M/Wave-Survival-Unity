@@ -132,6 +132,14 @@ PrefabInstance:
       propertyPath: hipPosition
       value: 
       objectReference: {fileID: 6055113944844083955}
+    - target: {fileID: 1971590952737776374, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+      propertyPath: allGunEnds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1971590952737776374, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+      propertyPath: allGunEnds.Array.data[0]
+      value: 
+      objectReference: {fileID: 6055113945654172504}
     - target: {fileID: 1971590952737776376, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
       propertyPath: fpsCam
       value: 
@@ -197,5 +205,10 @@ PrefabInstance:
 --- !u!4 &4717707509488788979 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7343771172381733313, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+  m_PrefabInstance: {fileID: 2635442531446592562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6055113945654172504 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8114060503647489898, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
   m_PrefabInstance: {fileID: 2635442531446592562}
   m_PrefabAsset: {fileID: 0}

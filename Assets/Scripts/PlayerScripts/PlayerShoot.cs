@@ -56,12 +56,16 @@ public class PlayerShoot : MonoBehaviour
     public GameObject gun, hipPosition, ADSPosition;
     private CharacterController characterController;
     private PlayerInputHandler playerInputHandler;
+    [SerializeField] GameObject subGun;
+    [SerializeField] Transform  subGunPosition;
+    [SerializeField] Transform  subGunADSPosition;
+    [SerializeField] Transform  subGunEnd;
 
-
+    [SerializeField] List<Transform> allGunEnds;
+    [SerializeField] int gunEndToFire;
+    [SerializeField] bool gunEndResetFlag;
+    [SerializeField] float gunEndResetTime;
     #endregion
-
-
-
 
 
 
@@ -71,14 +75,16 @@ public class PlayerShoot : MonoBehaviour
     public WaitForSeconds shotDuration = new WaitForSeconds(0.07f);    // WaitForSeconds object used by our ShotEffect coroutine, determines time laser line will remain visible
     public LineRenderer laserLine;                                        // Reference to the LineRenderer component which will display our laserline
     public float nextFire;                                                // Float to store the time the player will be allowed to fire again, after firing
-
     private GameObject hitDecal;
 
 
     private bool input_Fire1;
     private bool input_Fire2;
     private bool input_Reload;
-    // Start is called before the first frame update
+
+
+
+
 
     private void Awake()
     {
@@ -167,7 +173,7 @@ public class PlayerShoot : MonoBehaviour
 
         gun = gameObject;
 
-        gunEnd = gun.transform.Find("gunEnd");
+        // gunEnd = gun.transform.Find("gunEnd");
         // Get and store a reference to our LineRenderer component
         laserLine = gun.GetComponent<LineRenderer>();
         //
@@ -269,7 +275,7 @@ public class PlayerShoot : MonoBehaviour
 
 
                 // Set the start position for our visual effect for our laser to the position of gunEnd
-                laserLine.SetPosition(0, gunEnd.position);
+                laserLine.SetPosition(0, allGunEnds[gunEndToFire].position);
 
                 int curShots = 0;
                 // Check if our raycast has hit anything
@@ -339,6 +345,7 @@ public class PlayerShoot : MonoBehaviour
                     Debug.Log("BANG!");
                     //reduces current mag contents
                     curMag--;
+                   if(gunEndToFire >= allGunEnds.Count-1){gunEndToFire=0;} else {gunEndToFire++;}
 
                     WUIC.updateAmmo();
 
@@ -351,7 +358,6 @@ public class PlayerShoot : MonoBehaviour
 
 
             }
-
 
             hasFired = true;
         }

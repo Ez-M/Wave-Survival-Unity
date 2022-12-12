@@ -160,6 +160,14 @@ PrefabInstance:
       propertyPath: hipPosition
       value: 
       objectReference: {fileID: 2113152535561064111}
+    - target: {fileID: 1971590952737776374, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+      propertyPath: allGunEnds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1971590952737776374, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+      propertyPath: allGunEnds.Array.data[0]
+      value: 
+      objectReference: {fileID: 6011817714986961485}
     - target: {fileID: 1971590952737776378, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
       propertyPath: m_Name
       value: gun (2)
@@ -230,5 +238,10 @@ GameObject:
 --- !u!4 &5052752553482941670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7343771172381733313, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
+  m_PrefabInstance: {fileID: 2590884070055298343}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6011817714986961485 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8114060503647489898, guid: 4b25afee24d0cf04e9feebcad2e5e7e7, type: 3}
   m_PrefabInstance: {fileID: 2590884070055298343}
   m_PrefabAsset: {fileID: 0}

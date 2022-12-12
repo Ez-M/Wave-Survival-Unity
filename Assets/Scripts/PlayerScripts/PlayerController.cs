@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         if(canMove)
         {
             CalculateView();    
-            if(pauseMenuController.gameIsPaused == false)
+            if(PauseMenuController.gameIsPaused == false)
             {
             CalculateJumpChange();
             }
@@ -147,6 +147,8 @@ public class PlayerController : MonoBehaviour
         // } else {leanController.isLR=false;}
         
     }
+
+
 
     //report variables for other scripts to use// 
 
@@ -232,7 +234,7 @@ public class PlayerController : MonoBehaviour
         {
                 playerGravity = -0.1f;
         }   
-        if(pauseMenuController.gameIsPaused == false){
+        if(PauseMenuController.gameIsPaused == false){
         newMovementSpeed.y += playerGravity;    }
         newMovementSpeed += jumpingForce*Time.deltaTime;
 

@@ -25,10 +25,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool input_inventory;
     #endregion
 
-            public DefaultInput passInputs()
-        {
-            return defaultInput;
-        }
+
 
     #region -InputActions-
     public InputAction Jump;
@@ -46,27 +43,20 @@ public class PlayerInputHandler : MonoBehaviour
 
     #region -Init Connections-
     private bool gunisInit;
-
     private PlayerManager playerManager;
     private GameObject playerCap;
     private GameObject leanPoint;
     private GameObject playerHead;
     private Camera playerCam;
-    private Camera gunCam;    
-
+    private Camera gunCam;
     private PlayerController playerController; 
-
     private GameObject WeaponUI;
     private GameObject activeWeapon;
-
     private WeaponUIController WUIC;
-
     public InventoryController inventoryController;
-
     private TMPro.TextMeshProUGUI ScoreCard;
     private TMPro.TextMeshProUGUI AmmoCounter;
     private TMPro.TextMeshProUGUI CST; //centerscreentext
-
     private PauseMenuController pauseMenuController;
 
     // private Transform gunEnd;   
@@ -167,6 +157,38 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void enableInputs(){
         defaultInput.Enable();
+    }
+
+    public void pauseInputs(){
+        Jump.Disable();
+        Sprint.Disable();
+        Interact.Disable();
+        Fire1.Disable();
+        Fire2.Disable();
+        Reload.Disable();
+        Weapon1.Disable();
+        Weapon2.Disable();
+        TempAction1.Disable();
+        // toggleInventory.Disable();
+        // togglePause.Disable();
+    }
+    public void unPauseInputs(){
+        Jump.Enable();
+        Sprint.Enable();
+        Interact.Enable();
+        Fire1.Enable();
+        Fire2.Enable();
+        Reload.Enable();
+        Weapon1.Enable();
+        Weapon2.Enable();
+        TempAction1.Enable();
+        // toggleInventory.Disable();
+        // togglePause.Disable();
+    }
+
+    public DefaultInput passInputs()
+    {
+        return defaultInput;
     }
 
     #region  -INPUT FUNCTIONS-
